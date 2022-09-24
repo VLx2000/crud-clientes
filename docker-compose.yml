@@ -22,3 +22,14 @@ services:
         MYSQL_DATABASE: db
         MYSQL_USER: teste
         MYSQL_PASSWORD: teste
+  frontend:
+    image: node:14.15-alpine
+    container_name: frontend
+    working_dir: /app
+    volumes:
+      - './frontend:/app'
+      - '/app/node_modules'
+    ports:
+      - 3000:3000
+    stdin_open: true
+    command: ash -c "npm install && npm start"

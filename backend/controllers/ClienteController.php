@@ -20,6 +20,9 @@ class ClienteController extends BaseController
                 }
  
                 $arrUsers = $userModel->getClientes($intLimit); */
+                header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+                header('Access-Control-Allow-Credentials: true');
+                header('Access-Control-Max-Age: 86400');    // cache for 1 day
                 $responseData = json_encode('opa');
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
