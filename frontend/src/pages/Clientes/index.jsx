@@ -41,8 +41,7 @@ function Clientes() {
                 </div>
             </header>
             {carregado ?
-                /* <ListaClientes clientes={clientes} /> */
-                <div>{clientes}</div>
+                <ListaClientes clientes={clientes} />
                 : <div className="d-flex justify-content-center">
                     <Spinner animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>

@@ -1,4 +1,5 @@
 <?php
+
 class ClienteController extends BaseController
 {
     /**
@@ -19,11 +20,45 @@ class ClienteController extends BaseController
                     $intLimit = $arrQueryStringParams['limit'];
                 }
  
-                $arrUsers = $userModel->getClientes($intLimit); */
+                $arrClientes = $userModel->getClientes($intLimit); */
                 header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
                 header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Max-Age: 86400');    // cache for 1 day
-                $responseData = json_encode('opa');
+                $arrClientes = array( 
+                                array("id"=> 1,
+                                "nome"=> "teste",
+                                "nascimento"=> "teste",
+                                "cpf"=> "teste",
+                                "celular"=> "teste",
+                                "email"=> "teste",
+                                "endereco"=> "teste",
+                                "observacao"=> "teste"),
+                                array("id"=> 2,
+                                "nome"=> "teste",
+                                "nascimento"=> "teste",
+                                "cpf"=> "teste",
+                                "celular"=> "teste",
+                                "email"=> "teste",
+                                "endereco"=> "teste",
+                                "observacao"=> "teste"),
+                                array("id"=> 3,
+                                "nome"=> "teste",
+                                "nascimento"=> "teste",
+                                "cpf"=> "teste",
+                                "celular"=> "teste",
+                                "email"=> "teste",
+                                "endereco"=> "teste",
+                                "observacao"=> "teste"),
+                                array("id"=> 4,
+                                "nome"=> "teste",
+                                "nascimento"=> "teste",
+                                "cpf"=> "teste",
+                                "celular"=> "teste",
+                                "email"=> "teste",
+                                "endereco"=> "teste",
+                                "observacao"=> "teste"),
+                            );
+                $responseData = json_encode($arrClientes);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';

@@ -12,15 +12,17 @@ function ListaClientes({ clientes }) {
                     <Card className="card-cliente">
                         <div>
                             <h4>#{cliente.id}</h4>
-                            <h6>Apelido: {cliente.apelido}</h6>
-                            <div>Sexo: {cliente.sexo}</div>
+                            <h6>Nome: {cliente.nome}</h6>
+                            <div>Nascimento: {cliente.nascimento}</div>
+                            <div>CPF: {cliente.cpf}</div>
+                            <div>Celular: {cliente.celular}</div>
+                            <div>Email: {cliente.email}</div>
+                            <div>Endereco: {cliente.endereco}</div>
+                            <div>Obs: {cliente.observacao}</div>
                         </div>
                         <div className="div-botoes-cliente">
                             <Link to={`/editar/${cliente.id}`}>
                                 <Button variant="outline-secondary">Editar</Button>
-                            </Link>
-                            <Link to={`/imagens/${cliente.id}`}>
-                                <Button variant="outline-primary">Imagens</Button>
                             </Link>
                         </div>
                     </Card>
