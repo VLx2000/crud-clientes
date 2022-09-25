@@ -20,10 +20,17 @@
         public function __construct($db){
             $this->conn = $db;
         }
+        public function getNumberOfPages(){
+            $sqlQuery = "SELECT * FROM $this->db_table";  
+            $consulta = $this->conn->prepare($sqlQuery);
+            $consulta->execute();
+            return $consulta;
+        }
 
         // GET ALL
-        public function getClientes(){
-            $sqlQuery = "SELECT * FROM $this->db_table";
+        public function getClientes($page){
+            $page_first_result = ($page-1) * 10;  
+            $sqlQuery = "SELECT * FROM $this->db_table LIMIT $page_first_result,10";
             //echo $sqlQuery;
             $consulta = $this->conn->prepare($sqlQuery);
             $consulta->execute();
@@ -118,4 +125,3 @@
             return false;
         }
     }
-?>

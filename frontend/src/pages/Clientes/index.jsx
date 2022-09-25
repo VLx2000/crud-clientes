@@ -1,6 +1,6 @@
 import { ListaClientes } from '../../components';
 import { useEffect, useState } from 'react';
-import { Button, Container, FormControl, Spinner } from 'react-bootstrap';
+import { Button, Container, FormControl, Pagination, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../utils/axios';
 
@@ -10,17 +10,53 @@ function Clientes() {
     const [carregado, setCarregado] = useState(false);
     const [clientes, setClientes] = useState([]);
     const [filter, setFilter] = useState('');
+    const [page, setPage] = useState(1);
+    const [itens, setItens] = useState([]);
+    const [numeroClientes, setnumeroClientes] = useState(0);
+    const [numeroClientesTotal, setnumeroClientesTotal] = useState(0);
+    const [mostrarPaginacao, setmostrarPaginacao] = useState(true);
 
     useEffect(() => {
-        getAll();
-    }, []);
-
-    function getAll() {
         axiosInstance
-            .get('/getall.php')
+            .get('/getNumberOfPages.php')
+            .then((res) => {
+                console.log(res.data)
+                const nClientes = res.data;
+                setnumeroClientes(nClientes);
+                setnumeroClientesTotal(nClientes);
+                const nPages = Math.ceil( nClientes / 10);
+                let aux = []
+                for (let number = 1; number <= nPages; number++) {
+                    aux.push(
+                        <Pagination.Item key={number} active={number === page} onClick={() => setPage(number)}>
+                            {number}
+                        </Pagination.Item>,
+                    );
+                }
+                setItens(aux);
+            })
+    }, [page]);
+
+    useEffect(() => {
+        axiosInstance
+            .get('/getall.php/?page=' + page)
             .then((res) => {
                 const data = res.data.body;
                 setClientes(data);
+                //console.table(data)
+            })
+            .catch((err) => alert("Erro ao carregar clientes " + err))
+            .finally(setCarregado(true));
+    }, [page]);
+
+    function getAll() {
+        axiosInstance
+            .get('/getall.php/?page=' + page)
+            .then((res) => {
+                const data = res.data.body;
+                setClientes(data);
+                setnumeroClientes(numeroClientesTotal);
+                setmostrarPaginacao(true);
                 //console.table(data)
             })
             .catch((err) => alert("Erro ao carregar clientes " + err))
@@ -35,6 +71,8 @@ function Clientes() {
             .then((res) => {
                 const data = res.data.body;
                 setClientes(data);
+                setnumeroClientes(data.length);
+                setmostrarPaginacao(false);
                 //console.table(data)
             })
             .catch((err) => alert("Erro ao carregar clientes " + err))
@@ -62,7 +100,13 @@ function Clientes() {
                 </div>
             </header>
             {carregado ?
-                clientes ? <ListaClientes clientes={clientes} /> : <div>Não foram achados clientes</div>
+                clientes ?
+                    <div>
+                        {mostrarPaginacao && <Pagination>{itens}</Pagination>}
+                        <div className='divMsg'><p>{numeroClientes} cliente(s) encontrados</p></div>
+                        <ListaClientes clientes={clientes} nClientes={numeroClientes} />
+                    </div>
+                    : <div>Não foram achados clientes</div>
                 : <div className="d-flex justify-content-center">
                     <Spinner animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>

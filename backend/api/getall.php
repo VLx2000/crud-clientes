@@ -11,7 +11,9 @@
 
     $items = new Cliente($db);
 
-    $res = $items->getClientes();
+    $page = isset($_GET['page']) ? $_GET['page'] : die();
+
+    $res = $items->getClientes($page);
     
     $itemCount = $res->rowCount();
 

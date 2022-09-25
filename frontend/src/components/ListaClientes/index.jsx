@@ -28,7 +28,6 @@ function ListaClientes({ clientes }) {
                     </Card>
                 </div>
             ))}
-            <div className='divMsg'><p>{clientes.length} cliente(s)</p></div>
         </div>
     );
 }
