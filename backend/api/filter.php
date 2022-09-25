@@ -11,12 +11,14 @@
 
     $items = new Cliente($db);
 
-    $res = $items->getClientes();
+    $filter = isset($_GET['filter']) ? $_GET['filter'] : die();
+
+    $res = $items->getClientesByFilter($filter);
     
     $itemCount = $res->rowCount();
 
     //echo json_encode($itemCount);
-
+    //echo $filter;
     if($itemCount > 0){
         
         $clientes = array();
@@ -25,7 +27,7 @@
 
         while ($row = $res->fetch(PDO::FETCH_ASSOC)){
             extract($row);
-            $e = array(
+            $cliente = array(
                 "id" => $id,
                 "nome" => $nome,
                 "nascimento" => $nascimento,
@@ -36,7 +38,7 @@
                 "observacao" => $observacao
             );
 
-            array_push($clientes["body"], $e);
+            array_push($clientes["body"], $cliente);
         }
         echo json_encode($clientes);
     }

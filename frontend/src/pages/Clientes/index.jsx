@@ -9,8 +9,13 @@ function Clientes() {
 
     const [carregado, setCarregado] = useState(false);
     const [clientes, setClientes] = useState([]);
+    const [filter, setFilter] = useState('');
 
     useEffect(() => {
+        getAll();
+    }, []);
+
+    function getAll() {
         axiosInstance
             .get('/getall.php')
             .then((res) => {
@@ -18,9 +23,23 @@ function Clientes() {
                 setClientes(data);
                 //console.table(data)
             })
-            .catch((err) => alert("Erro ao carregar clientes" + err))
+            .catch((err) => alert("Erro ao carregar clientes " + err))
             .finally(setCarregado(true));
-    }, []);
+    }
+
+    function search() {
+        //console.log(filter)
+        setCarregado(false);
+        axiosInstance
+            .get('/filter.php/?filter=' + filter)
+            .then((res) => {
+                const data = res.data.body;
+                setClientes(data);
+                //console.table(data)
+            })
+            .catch((err) => alert("Erro ao carregar clientes " + err))
+            .finally(setCarregado(true));
+    }
 
     return (
         <Container>
@@ -28,11 +47,13 @@ function Clientes() {
             <header className="header">
                 <FormControl
                     type="search"
-                    placeholder="filtrar clientes por id"
+                    placeholder="filtrar clientes por nome ou email"
                     className="me-2"
                     aria-label="Search"
-                /* onChange={handleFilter} */
+                    onChange={(e) => setFilter(e.target.value)}
                 />
+                <Button variant="outline-success" onClick={() => search()}>Buscar</Button>
+                <Button variant="outline-warning" onClick={() => getAll()}>Remover filtro</Button>
                 {/* Ir para formulario de criação de clientes */}
                 <div className="div-botao-novo">
                     <Link to={'/adicionar'}>
@@ -41,7 +62,7 @@ function Clientes() {
                 </div>
             </header>
             {carregado ?
-                clientes && <ListaClientes clientes={clientes} />
+                clientes ? <ListaClientes clientes={clientes} /> : <div>Não foram achados clientes</div>
                 : <div className="d-flex justify-content-center">
                     <Spinner animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>

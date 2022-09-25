@@ -17,7 +17,7 @@
 
     if($item->nome != null){
         // create array
-        $emp_arr = array(
+        $cliente = array(
             "id" => $item->id,
             "nome" => $item->nome,
             "nascimento" => $item->nascimento,
@@ -29,7 +29,7 @@
         );
       
         http_response_code(200);
-        echo json_encode($emp_arr);
+        echo json_encode($cliente);
     }
       
     else{

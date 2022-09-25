@@ -23,52 +23,50 @@
 
         // GET ALL
         public function getClientes(){
-            $sqlQuery = "SELECT id, nome, nascimento, cpf, celular, email, endereco, observacao FROM " . $this->db_table . "";
+            $sqlQuery = "SELECT * FROM $this->db_table";
             //echo $sqlQuery;
-            $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->execute();
-            return $stmt;
+            $consulta = $this->conn->prepare($sqlQuery);
+            $consulta->execute();
+            return $consulta;
+        }
+        // GET ALL BY FILTER
+        public function getClientesByFilter($filter){
+            $sqlQuery = "SELECT * FROM $this->db_table WHERE nome LIKE '%$filter%' OR email LIKE '%$filter%'";
+            //echo $sqlQuery;
+            $consulta = $this->conn->prepare($sqlQuery);
+            $consulta->execute();
+            return $consulta;
         }
         // CREATE
         public function createCliente(){
-            $sqlQuery = "INSERT INTO
-                        ". $this->db_table ." (nome, nascimento, cpf, celular, email, endereco, observacao)
+            $sqlQuery = "INSERT INTO $this->db_table (nome, nascimento, cpf, celular, email, endereco, observacao)
                     VALUES (:nome, :nascimento, :cpf, :celular, :email, :endereco, :observacao)";
         
-            $stmt = $this->conn->prepare($sqlQuery);
-
-            /* $this->nome=htmlspecialchars(strip_tags($this->nome));
-            $this->nascimento=htmlspecialchars(strip_tags($this->nascimento));
-            $this->cpf=htmlspecialchars(strip_tags($this->cpf));
-            $this->celular=htmlspecialchars(strip_tags($this->celular));
-            $this->email=htmlspecialchars(strip_tags($this->email));
-            $this->endereco=htmlspecialchars(strip_tags($this->endereco));
-            $this->observacao=htmlspecialchars(strip_tags($this->observacao)); */
+            $consulta = $this->conn->prepare($sqlQuery);
 
             //echo $sqlQuery;
-            $stmt->bindParam(":nome", $this->nome);
-            $stmt->bindParam(":nascimento", $this->nascimento);
-            $stmt->bindParam(":cpf", $this->cpf);
-            $stmt->bindParam(":celular", $this->celular);
-            $stmt->bindParam(":email", $this->email);
-            $stmt->bindParam(":endereco", $this->endereco);
-            $stmt->bindParam(":observacao", $this->observacao);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":nascimento", $this->nascimento);
+            $consulta->bindParam(":cpf", $this->cpf);
+            $consulta->bindParam(":celular", $this->celular);
+            $consulta->bindParam(":email", $this->email);
+            $consulta->bindParam(":endereco", $this->endereco);
+            $consulta->bindParam(":observacao", $this->observacao);
             
-            if($stmt->execute()){
+            if($consulta->execute()){
                return true;
             }
             return false;
         }
         // GET single
         public function getCliente(){
-            $sqlQuery = "SELECT id, nome, nascimento, cpf, celular, email, endereco, observacao FROM " . $this->db_table . "
-                        WHERE id = ?";
+            $sqlQuery = "SELECT * FROM $this->db_table WHERE id = ?";
 
-            $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->bindParam(1, $this->id);
-            $stmt->execute();
+            $consulta = $this->conn->prepare($sqlQuery);
+            $consulta->bindParam(1, $this->id);
+            $consulta->execute();
             //echo $sqlQuery;
-            $dataRow = $stmt->fetch(PDO::FETCH_ASSOC);
+            $dataRow = $consulta->fetch(PDO::FETCH_ASSOC);
             
             $this->nome = $dataRow['nome'];
             $this->nascimento = $dataRow['nascimento'];
@@ -80,54 +78,41 @@
         }        
         // UPDATE
         public function updateCliente(){
-            $sqlQuery = "UPDATE
-                        ". $this->db_table ."
-                    SET
-                        nome = :nome, 
-                        nascimento = :nascimento, 
-                        cpf = :cpf, 
-                        celular = :celular, 
-                        email = :email, 
-                        endereco = :endereco, 
-                        observacao = :observacao
-                    WHERE 
-                        id = :id";
+            $sqlQuery = "UPDATE $this->db_table 
+                        SET nome = :nome, 
+                            nascimento = :nascimento, 
+                            cpf = :cpf, 
+                            celular = :celular, 
+                            email = :email, 
+                            endereco = :endereco, 
+                            observacao = :observacao
+                        WHERE id = :id";
         
-            $stmt = $this->conn->prepare($sqlQuery);
+            $consulta = $this->conn->prepare($sqlQuery);
 
-            $this->nome=htmlspecialchars(strip_tags($this->nome));
-            $this->nascimento=htmlspecialchars(strip_tags($this->nascimento));
-            $this->cpf=htmlspecialchars(strip_tags($this->cpf));
-            $this->celular=htmlspecialchars(strip_tags($this->celular));
-            $this->email=htmlspecialchars(strip_tags($this->email));
-            $this->endereco=htmlspecialchars(strip_tags($this->endereco));
-            $this->observacao=htmlspecialchars(strip_tags($this->observacao));
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":nascimento", $this->nascimento);
+            $consulta->bindParam(":cpf", $this->cpf);
+            $consulta->bindParam(":celular", $this->celular);
+            $consulta->bindParam(":email", $this->email);
+            $consulta->bindParam(":endereco", $this->endereco);
+            $consulta->bindParam(":observacao", $this->observacao);
+
+            $consulta->bindParam(":id", $this->id);
         
-            $this->id=htmlspecialchars(strip_tags($this->id));
-
-            $stmt->bindParam(":nome", $this->nome);
-            $stmt->bindParam(":nascimento", $this->nascimento);
-            $stmt->bindParam(":cpf", $this->cpf);
-            $stmt->bindParam(":celular", $this->celular);
-            $stmt->bindParam(":email", $this->email);
-            $stmt->bindParam(":endereco", $this->endereco);
-            $stmt->bindParam(":observacao", $this->observacao);
-
-            $stmt->bindParam(":id", $this->id);
-        
-            if($stmt->execute()){
+            if($consulta->execute()){
                return true;
             }
             return false;
         }
         // DELETE
         function deleteCliente(){
-            $sqlQuery = "DELETE FROM " . $this->db_table . " WHERE id = ?";
-            $stmt = $this->conn->prepare($sqlQuery);
+            $sqlQuery = "DELETE FROM $this->db_table WHERE id = ?";
+            $consulta = $this->conn->prepare($sqlQuery);
             
-            $stmt->bindParam(1, $this->id);
+            $consulta->bindParam(1, $this->id);
         
-            if($stmt->execute()){
+            if($consulta->execute()){
                 return true;
             }
             return false;
