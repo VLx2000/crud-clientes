@@ -11,17 +11,6 @@ services:
       - ./backend:/var/www/html/
     ports:
       - 8000:80
-  mysql-db:
-    container_name: mysql-db
-    image: mysql:5.7
-    restart: always
-    ports:
-      - '3307:3306'
-    environment:
-        MYSQL_ROOT_PASSWORD: teste
-        MYSQL_DATABASE: db
-        MYSQL_USER: teste
-        MYSQL_PASSWORD: teste
   frontend:
     image: node:14.15-alpine
     container_name: frontend
@@ -33,3 +22,20 @@ services:
       - 3000:3000
     stdin_open: true
     command: ash -c "npm install && npm start"
+  mysql-db:
+    container_name: mysql-db
+    image: mysql:5.7
+    restart: always
+    ports:
+      - '3307:3306'
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: db
+        MYSQL_USER: teste
+        MYSQL_PASSWORD: teste
+    command: --init-file /data/application/init.sql
+    volumes:
+        - db:/var/lib/mysql
+        - ./backend/init.sql:/data/application/init.sql
+volumes:
+  db:

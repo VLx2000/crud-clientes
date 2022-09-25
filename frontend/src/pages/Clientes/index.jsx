@@ -12,14 +12,14 @@ function Clientes() {
 
     useEffect(() => {
         axiosInstance
-            .get('/cliente/list')
+            .get('/getall.php')
             .then((res) => {
-                const data = res.data;
+                const data = res.data.body;
                 setClientes(data);
                 //console.table(data)
-                setCarregado(true);
             })
-            .catch((err) => alert("Erro ao carregar clientes" + err));
+            .catch((err) => alert("Erro ao carregar clientes" + err))
+            .finally(setCarregado(true));
     }, []);
 
     return (
@@ -41,7 +41,7 @@ function Clientes() {
                 </div>
             </header>
             {carregado ?
-                <ListaClientes clientes={clientes} />
+                clientes && <ListaClientes clientes={clientes} />
                 : <div className="d-flex justify-content-center">
                     <Spinner animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>
