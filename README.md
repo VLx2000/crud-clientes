@@ -27,7 +27,7 @@ Depois acesse a rota [3000](http://localhost:3000)
 > Obs3: O banco de dados MySQL será criado e povoado com exemplos automaticamente
 
 ### Rotas disponíveis
-> No caminho `/api`
+> No caminho `http://localhost:8000/api`
 
 Requisição | Rota | Função
 --------- | ------ | ------
