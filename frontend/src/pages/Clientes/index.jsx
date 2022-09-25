@@ -20,7 +20,7 @@ function Clientes() {
         axiosInstance
             .get('/getNumberOfPages.php')
             .then((res) => {
-                console.log(res.data)
+                //console.log(res.data)
                 const nClientes = res.data;
                 setnumeroClientes(nClientes);
                 setnumeroClientesTotal(nClientes);
@@ -85,13 +85,14 @@ function Clientes() {
             <header className="header">
                 <FormControl
                     type="search"
-                    placeholder="filtrar clientes por nome ou email"
+                    placeholder="pesquisar por nome/email"
                     className="me-2"
                     aria-label="Search"
+                    style={{width: '40%'}}
                     onChange={(e) => setFilter(e.target.value)}
                 />
                 <Button variant="outline-success" onClick={() => search()}>Buscar</Button>
-                <Button variant="outline-warning" onClick={() => getAll()}>Remover filtro</Button>
+                {!mostrarPaginacao && <Button variant="outline-warning" style={{marginLeft: '10px'}}onClick={() => getAll()}>Remover filtro</Button>}
                 {/* Ir para formulario de criação de clientes */}
                 <div className="div-botao-novo">
                     <Link to={'/adicionar'}>
@@ -102,7 +103,7 @@ function Clientes() {
             {carregado ?
                 clientes ?
                     <div>
-                        {mostrarPaginacao && <Pagination>{itens}</Pagination>}
+                        {mostrarPaginacao && <Pagination className='divMsg'>{itens}</Pagination>}
                         <div className='divMsg'><p>{numeroClientes} cliente(s) encontrados</p></div>
                         <ListaClientes clientes={clientes} nClientes={numeroClientes} />
                     </div>

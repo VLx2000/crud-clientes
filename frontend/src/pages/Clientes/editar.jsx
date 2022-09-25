@@ -185,7 +185,7 @@ function EditarCliente() {
                                 O limite é de 300 caracteres
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group controlId="criar" className="mb-3 div-botao-entrar">
+                        <Form.Group controlId="criar" className="mb-3 div-botoes-acao">
                             <Button variant="secondary" disabled={erroCpf || erroNome || erroObs} type="submit">Salvar</Button>
                             <Button variant="outline-danger" onClick={deletar}>Apagar cliente</Button>
                         </Form.Group>
