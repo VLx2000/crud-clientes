@@ -31,8 +31,9 @@ Depois acesse a rota [3000](http://localhost:3000)
 
 Requisição | Rota | Função
 --------- | ------ | ------
-get | `/getall.php` | obter todos os clientes
+get | `/getall.php/?page={numero}` | obter todos os clientes sendo separados por pag de 10 elementos
 get | `/get.php/?id={id}` | obter determinado cliente
+get | `/filter.php/?filter={filtro}` | pesquisar por clientes com determinado filtro (nome ou email)
 post | `/create.php` | criar novo cliente
 put | `/update.php/?id={id}` | atualizar cliente
 delete | `/delete.php/?id={id}` | deletar cliente
