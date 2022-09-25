@@ -32,27 +32,20 @@
         // CREATE
         public function createCliente(){
             $sqlQuery = "INSERT INTO
-                        ". $this->db_table ."
-                    SET
-                        nome = :nome, 
-                        nascimento = :nascimento, 
-                        cpf = :cpf, 
-                        celular = :celular, 
-                        email = :email, 
-                        endereco = :endereco, 
-                        observacao = :observacao";
+                        ". $this->db_table ." (nome, nascimento, cpf, celular, email, endereco, observacao)
+                    VALUES (:nome, :nascimento, :cpf, :celular, :email, :endereco, :observacao)";
         
             $stmt = $this->conn->prepare($sqlQuery);
 
-            $this->nome=htmlspecialchars(strip_tags($this->nome));
+            /* $this->nome=htmlspecialchars(strip_tags($this->nome));
             $this->nascimento=htmlspecialchars(strip_tags($this->nascimento));
             $this->cpf=htmlspecialchars(strip_tags($this->cpf));
             $this->celular=htmlspecialchars(strip_tags($this->celular));
             $this->email=htmlspecialchars(strip_tags($this->email));
             $this->endereco=htmlspecialchars(strip_tags($this->endereco));
-            $this->observacao=htmlspecialchars(strip_tags($this->observacao));
+            $this->observacao=htmlspecialchars(strip_tags($this->observacao)); */
 
-            echo $sqlQuery;
+            //echo $sqlQuery;
             $stmt->bindParam(":nome", $this->nome);
             $stmt->bindParam(":nascimento", $this->nascimento);
             $stmt->bindParam(":cpf", $this->cpf);
@@ -60,7 +53,7 @@
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":endereco", $this->endereco);
             $stmt->bindParam(":observacao", $this->observacao);
-            //echo $stmt;
+            
             if($stmt->execute()){
                return true;
             }

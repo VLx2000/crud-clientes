@@ -23,7 +23,7 @@ function NovoCliente() {
         axiosInstance
             .post('/create.php',
                 JSON.stringify({ nome, nascimento, cpf, celular, email, endereco, observacao }),
-                { headers: { "Content-Type": 'application/json', } }
+                //{ headers: { "Content-Type": 'application/json', } }
             )
             .then((res) => {
                 navigate('/');
