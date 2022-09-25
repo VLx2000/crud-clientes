@@ -1,11 +1,12 @@
 # CRUD de clientes
 
-API REST e frontend para CRUD de pacientes. Utiliza React e PHP.
+API REST e frontend para CRUD de clientes. Utiliza React e PHP.
 
 ### Tecnologias usadas
 #### (Front - React)
 - Bootstrap
 - Font awesome
+- Axios
 #### (Back - PHP)
 - PDO
 #### (BD)
